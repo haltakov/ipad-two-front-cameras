@@ -62,6 +62,16 @@ def main():
     fill_holes(disp_left)
     fill_holes(disp_right)
 
+    # Resize disparity maps if needed
+    if disp_left.shape[0] != image_left.shape[0]:
+        disparity_factor = image_left.shape[0] / disp_left.shape[0]
+
+        disp_left *= disparity_factor
+        disp_right *= disparity_factor
+
+        disp_left = cv2.resize(disp_left, (image_left.shape[1], image_left.shape[0]), interpolation=cv2.INTER_LINEAR)
+        disp_right = cv2.resize(disp_right, (image_right.shape[1], image_right.shape[0]), interpolation=cv2.INTER_LINEAR)
+
     # Compute the virtual image
     virtual_image = compute_virtual_camera_image(image_left, image_right, disp_left, disp_right, offset)
     print('Virtual image computed')
