@@ -1,7 +1,7 @@
 import os
 import cv2
 import argparse
-from virtual_camera import compute_virtual_camera_image, fill_holes
+from virtual_camera import compute_virtual_camera_image, compute_virtual_camera_image_inverse, fill_holes
 
 
 def parse_args():
@@ -50,8 +50,8 @@ def main():
     offset = float(args.offset)
 
     # Read the images
-    image_left = cv2.imread(os.path.join(args.input, 'image_left.png'), cv2.IMREAD_UNCHANGED)
-    image_right = cv2.imread(os.path.join(args.input, 'image_right.png'), cv2.IMREAD_UNCHANGED)
+    image_left = cv2.imread(os.path.join(args.input, 'image_left_big.png'), cv2.IMREAD_UNCHANGED)
+    image_right = cv2.imread(os.path.join(args.input, 'image_right_big.png'), cv2.IMREAD_UNCHANGED)
     disp_left = cv2.imread(os.path.join(args.input, 'disp_left.png'), cv2.IMREAD_UNCHANGED)
     disp_right = cv2.imread(os.path.join(args.input, 'disp_right.png'), cv2.IMREAD_UNCHANGED)
     print('Images loaded')
@@ -59,8 +59,9 @@ def main():
     # Prepare disparity maps
     disp_left = disp_left / 256.0
     disp_right = disp_right / 256.0
-    fill_holes(disp_left)
-    fill_holes(disp_right)
+
+    # fill_holes(disp_left)
+    # fill_holes(disp_right)
 
     # Resize disparity maps if needed
     if disp_left.shape[0] != image_left.shape[0]:
@@ -73,7 +74,7 @@ def main():
         disp_right = cv2.resize(disp_right, (image_right.shape[1], image_right.shape[0]), interpolation=cv2.INTER_LINEAR)
 
     # Compute the virtual image
-    virtual_image = compute_virtual_camera_image(image_left, image_right, disp_left, disp_right, offset)
+    virtual_image = compute_virtual_camera_image_inverse(image_left, image_right, disp_left, disp_right, offset)
     print('Virtual image computed')
 
     # Write result

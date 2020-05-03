@@ -1,13 +1,5 @@
 import numpy as np
 
-#    4   5   6   7
-#   10   0   0  40
-# start = 5
-# end = 7
-# length = 2
-# color_change = 30
-# color_step = 10
-
 
 def fill_hole(row, start, end):
     """
@@ -56,6 +48,102 @@ def compute_virtual_camera_image(image_left, image_right, disp_left, disp_right,
     fill_holes(virtual_image)
 
     return virtual_image
+
+
+def find_correspondence_left_image(x, offsets):
+    """
+    Find the corresponding pixel in the left image of a pixel in the result image
+    """
+    candidates = np.where(np.diff((offsets > x).astype(np.int)) > 0)
+
+    if len(candidates[0]) and len(candidates[0]):
+        return candidates[0][-1]
+    else:
+        return None
+
+
+
+def find_correspondence_right_image(x, offsets):
+    """
+    Find the corresponding pixel in the right image of a pixel in the result image
+    """
+    candidates = np.where(np.diff((offsets > x).astype(np.int)) > 0)
+
+    if len(candidates) and len(candidates[0]):
+        return candidates[0][0]
+    else:
+        return None
+
+
+def interpolate_color(source_image_row, x1, x2, factor):
+    """
+    Get a linear interpolated color
+    """
+    value1 = source_image_row[x1]
+    value2 = source_image_row[x2]
+    return np.round(value1*factor + (1-factor)*value2)
+
+
+def compute_offset_image(disp, direction):
+    offset_image = np.zeros(disp.shape, np.float64)
+
+    for y in range(0, len(offset_image)):
+        row = offset_image[y]
+        disp_row = disp[y]
+
+        for x in range(0, len(row)):
+            row[x] = x + direction*disp_row[x]
+
+    return offset_image
+
+
+def compute_virtual_camera_image_inverse(image_left, image_right, disp_left, disp_right, position):
+    """
+    Computer an image from a virtual camera by iterating over the result image
+    """
+    disp_threshold = 7
+
+    virtual_image = np.zeros(image_left.shape, image_left.dtype)
+    left_offset = compute_offset_image(disp_left, -position)
+    right_offset = compute_offset_image(disp_right, 1-position)
+
+    for y in range(0, len(virtual_image)):
+        print(y)
+
+        row = virtual_image[y]
+        image_left_row = image_left[y]
+        image_right_row = image_right[y]
+        left_offset_row = left_offset[y]
+        right_offset_row = right_offset[y]
+
+        for x in range(0, len(row)):
+            left_id = find_correspondence_left_image(x, left_offset_row)
+            # left_id = None
+            right_id = find_correspondence_right_image(x, right_offset_row)
+            # right_id = None
+
+            diff_left = left_offset_row[left_id+1] - left_offset_row[left_id] if left_id else 999999
+            diff_right = right_offset_row[right_id+1] - right_offset_row[right_id] if right_id else 999999
+
+            if diff_left <= disp_threshold:
+                color_left = interpolate_color(image_left_row, left_id, left_id + 1,
+                                           (left_offset_row[left_id+1] - x) / diff_left)
+            if diff_right <= disp_threshold:
+                color_right = interpolate_color(image_right_row, right_id, right_id + 1,
+                                           (right_offset_row[right_id+1] - x) / diff_right)
+
+            if diff_left > disp_threshold and diff_right > disp_threshold:
+                row[x][3] = 255
+            elif diff_right > disp_threshold:
+                row[x] = color_left
+            elif diff_left > disp_threshold:
+                row[x] = color_right
+            else:
+                # row[x] = color_right * x/len(row) + color_left * (1 - x/len(row))
+                row[x] = color_right
+
+    return virtual_image
+
 
 
 def project_image(image, target_image, disparity, left_to_right=True):
