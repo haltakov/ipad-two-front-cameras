@@ -50,8 +50,8 @@ def main():
     offset = float(args.offset)
 
     # Read the images
-    image_left = cv2.imread(os.path.join(args.input, 'image_left_big.png'), cv2.IMREAD_UNCHANGED)
-    image_right = cv2.imread(os.path.join(args.input, 'image_right_big.png'), cv2.IMREAD_UNCHANGED)
+    image_left = cv2.imread(os.path.join(args.input, 'image_left.png'), cv2.IMREAD_UNCHANGED)
+    image_right = cv2.imread(os.path.join(args.input, 'image_right.png'), cv2.IMREAD_UNCHANGED)
     disp_left = cv2.imread(os.path.join(args.input, 'disp_left.png'), cv2.IMREAD_UNCHANGED)
     disp_right = cv2.imread(os.path.join(args.input, 'disp_right.png'), cv2.IMREAD_UNCHANGED)
     print('Images loaded')
