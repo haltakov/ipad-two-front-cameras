@@ -108,7 +108,8 @@ def compute_virtual_camera_image_inverse(image_left, image_right, disp_left, dis
     right_offset = compute_offset_image(disp_right, 1-position)
 
     for y in range(0, len(virtual_image)):
-        print(y)
+        if y % 36 == 0:
+            print(y)
 
         row = virtual_image[y]
         image_left_row = image_left[y]
@@ -140,7 +141,9 @@ def compute_virtual_camera_image_inverse(image_left, image_right, disp_left, dis
                 row[x] = color_right
             else:
                 # row[x] = color_right * x/len(row) + color_left * (1 - x/len(row))
-                row[x] = color_right
+                # row[x] = color_right
+                row[x] = color_left
+
 
     return virtual_image
 
