@@ -1,6 +1,6 @@
 # An iPad with two front cameras - proof of concept
 
-In my blog post [Why Apple should put a second front camera on the iPad?](https://haltakov.net/blog/ipad-with-two-front-cameras/) I wrote about how the video conferencing experience on the iPad can be improved if there was a second front camera. In this repository you will find all the code needed to run the prototype yourself.
+In my blog post [Why Apple should put a second front camera on the iPad?](https://haltakov.net/blog/ipad-with-two-front-cameras/) I wrote about how the video conferencing experience on the iPad can be improved if there was a second front camera. In this repository, you will find all the code needed to run the prototype yourself.
 
 ![iPad with a stereo camera](ipad-stereo-camera-arrows.jpg)
 
@@ -11,7 +11,7 @@ In the folder `images` you will find my photos that I used for the experiment. I
 
 ### 1. Taking the photos
 
-Take 2 photos of yourself by shifting the iPad horizontaly from one side to another, avoiding any rotation. Make sure that you keep as still as possible. It is important to lock the exposure control by long pressing on the image.
+Take 2 photos of yourself by shifting the iPad horizontally from one side to another, avoiding any rotation. Make sure that you keep as still as possible. It is important to lock the exposure control by long pressing on the image.
 
 ### 2. Scaling
 
@@ -19,7 +19,7 @@ Scale down the images so that they can be processed in reasonable time (and on r
 
 ### 3. Download and compile GANet
 
-Clone the [GANet](https://github.com/feihuzhang/GANet) repository and compile the code according to the instructions. You will need a powerful NVidia GPU (I used a GeForce RTX 2080). I used the `sceneflow` model, because the KITTI models seem to be fine tuned to street scenes and produce worse results.
+Clone the [GANet](https://github.com/feihuzhang/GANet) repository and compile the code according to the instructions. You will need a powerful NVidia GPU (I used a GeForce RTX 2080). I used the `sceneflow` model, because the KITTI models seem to be fine-tuned to street scenes and produce worse results.
 
 ### 4. Compute the disparity maps
 
