@@ -2,7 +2,7 @@
 
 In my blog post [Why Apple should put a second front camera on the iPad?](https://haltakov.net/blog/ipad-with-two-front-cameras/) I wrote about how the video conferencing experience on the iPad can be improved if there was a second front camera. In this repository you will find all the code needed to run the prototype yourself.
 
-![iPad with a stereo camera](ipad-stereo-camera-arrows.jpg){width: 750px}
+![iPad with a stereo camera](ipad-stereo-camera-arrows.jpg)
 
 ## Preparing the images
 
