@@ -56,10 +56,11 @@ def main():
     disp_right = cv2.imread(os.path.join(args.input, 'disp_right.png'), cv2.IMREAD_UNCHANGED)
     print('Images loaded')
 
-    # Prepare disparity maps
+    # Scale the disparity maps
     disp_left = disp_left / 256.0
     disp_right = disp_right / 256.0
 
+    # I tried some hole filling, but it didn't work very well
     # fill_holes(disp_left)
     # fill_holes(disp_right)
 

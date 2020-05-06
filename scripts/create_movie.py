@@ -15,6 +15,3 @@ for i in range(1, frames-1):
 
 for i in range(0, frames):
     copyfile('images/video/frame_%03d.png' % i, 'images/video/frame_%03d.png' % (frames*2-i-2))
-
-
-1/20 * 10
